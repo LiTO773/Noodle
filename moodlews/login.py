@@ -2,6 +2,7 @@ import requests
 import json
 from errors.error_codes import UNABLE_TO_LOGIN
 
+
 def login(config: dict) -> str:
     """ This function is used to login to moodle. It returns the token if it was successful, otherwise returns
     UNABLE_TO_LOGIN """
