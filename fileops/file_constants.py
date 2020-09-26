@@ -2,5 +2,7 @@ CONFIG_FILE_NAME = 'config.json'
 CONFIG_BODY = {
     'username': '',
     'password': '',
-    'host': ''
+    'host': '',
+    'courses': {},
+    'default_new_course': 'download'
 }

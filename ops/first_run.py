@@ -1,3 +1,5 @@
+import sys
+
 from fileops.check_config import check_config
 from fileops.create_config import create_config
 from fileops.read_config import read_config
@@ -21,9 +23,10 @@ def first_run() -> Infos:
 
         if token == UNABLE_TO_LOGIN:
             logging.error(ERROR_STRINGS[UNABLE_TO_LOGIN])
+            sys.exit(-1)
 
         # Login complete, get the user's info
-        state = Infos(content['host'], content['username'], content['password'], token)
+        state = Infos(content['host'], content['username'], content['password'], content['courses'], token)
         get_site_info(state)
 
         return state
@@ -31,5 +34,7 @@ def first_run() -> Infos:
         if result == CONFIG_FILE_DOESNT_EXIST:
             logging.error("config.json doesn't exist, creating it. Please fill it and run again.")
             create_config()
+            sys.exit(-1)
         else:
             logging.error(ERROR_STRINGS[result])
+            sys.exit(-1)
