@@ -14,9 +14,13 @@ def check_config():
         content_keys = content.keys()
         expected_keys = CONFIG_BODY.keys()
 
-        if set(content_keys) == set(expected_keys):
+        if set(content_keys) == set(expected_keys) and __validate_data(content):
             return ''
         else:
             return CONFIG_FILE_BADLY_FORMATTED
     else:
         return CONFIG_FILE_DOESNT_EXIST
+
+
+def __validate_data(content: dict) -> bool:
+    return len(content['username']) > 0 and len(content['password']) > 0 and len(content['host'])
