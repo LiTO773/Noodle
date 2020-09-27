@@ -15,19 +15,18 @@ def first_run() -> Infos:
     """ This function is launched when the app starts and makes sure that everything is properly setup. If everything
     ran correctly, it returns the token. Otherwise it stops the application. """
     result = check_config()
-    if result == '':
+    if isinstance(result, dict):
         logging.info('config.json is fine. Logging in.')
         # The config file already exists, read it
-        content = read_config()
-        token = login(content)
+        token = login(result)
 
         if token == UNABLE_TO_LOGIN:
             logging.error(ERROR_STRINGS[UNABLE_TO_LOGIN])
             sys.exit(-1)
 
         # Login complete, get the user's info
-        state = Infos(content['host'], content['username'], content['password'], content['courses'],
-                      content['default_action'], token)
+        state = Infos(result['host'], result['username'], result['password'], result['courses'],
+                      result['default_action'], token)
         get_site_info(state)
 
         return state

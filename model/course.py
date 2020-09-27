@@ -29,8 +29,17 @@ class Course(ConvertToDict):
             'shortname': self.shortname,
             'download': self.download,
             'downloaded': self.downloaded,
-            'sections': section_dict
+            'sections': section_dict,
+            'hash': hash(self)
         }
+
+    def __hash__(self):
+        section_hash_str = 0
+
+        for section in self.sections:
+            section_hash_str += hash(section)
+
+        return hash((self.id, section_hash_str))
 
 
 class _Section(ConvertToDict):
@@ -65,6 +74,15 @@ class _Section(ConvertToDict):
             'name': self.name,
             'download': self.download,
             'downloaded': self.downloaded,
-            'files': files_dict
+            'files': files_dict,
+            'hash': hash(self)
         }
+
+    def __hash__(self):
+        file_hash_str = 0
+
+        for file in self.files:
+            file_hash_str += hash(file)
+
+        return hash((self.id, file_hash_str))
 

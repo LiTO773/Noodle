@@ -16,5 +16,9 @@ class URL(ConvertToDict):
             'filesize': self.filesize,
             'fileurl': self.fileurl,
             'download': self.download,
-            'downloaded': self.downloaded
+            'downloaded': self.downloaded,
+            'hash': hash(self)
         }
+
+    def __hash__(self):
+        return hash((self.filename, self.filesize, self.fileurl))

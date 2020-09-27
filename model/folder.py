@@ -32,5 +32,14 @@ class Folder(ConvertToDict):
             'url': self.url,
             'download': self.download,
             'downloaded': self.downloaded,
-            'files': files_dict
+            'files': files_dict,
+            'hash': hash(self)
         }
+
+    def __hash__(self):
+        file_hash_str = 0
+
+        for file in self.files:
+            file_hash_str += hash(file)
+
+        return hash((self.id, self.url, file_hash_str))

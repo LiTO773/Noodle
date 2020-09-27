@@ -35,5 +35,9 @@ class File(ConvertToDict):
             'timecreated': self.timecreated,
             'timemodified': self.timemodified,
             'download': self.download,
-            'downloaded': self.downloaded
+            'downloaded': self.downloaded,
+            'hash': hash(self)
         }
+
+    def __hash__(self):
+        return hash((self.filename, self.filesize, self.fileurl, self.timecreated, self.timemodified))
