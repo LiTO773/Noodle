@@ -25,7 +25,6 @@ def check_contents(state: Config):
     # Write to the config.json the new courses
     write_config(state)
 
-
     # Check what to do
     if state.default_action == 'notify':
         # TODO Better notification

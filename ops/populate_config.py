@@ -13,7 +13,7 @@ from model.folder import Folder
 
 def populate_config(conn: Connection, config: Config):
     """ This function is responsible for populating a config with the information present in the DB """
-    rows = get_config_courses(conn, config.db_id)
+    rows = get_config_courses(conn, config.id())
     courses = []
 
     # Create the courses and populate each one

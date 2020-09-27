@@ -26,30 +26,31 @@ class File(ConvertToDict):
         return None
 
     def __init__(self, filename, filesize, fileurl, timecreated, timemodified, download=False):
-        self.filename = filename
-        self.filesize = filesize
-        self.fileurl = fileurl
-        self.timecreated = timecreated
-        self.timemodified = timemodified
-        self.download = download
-        self.downloaded = False
+        self.__filename = filename
+        self.__filesize = filesize
+        self.__fileurl = fileurl
+        self.__timecreated = timecreated
+        self.__timemodified = timemodified
+        self.__download = download
+        self.__downloaded = False
+        self.__current_hash = -1
 
     def __set_remaining_params(self, downloaded, current_hash):
         """ Used to add parameters already available in the DB """
-        self.downloaded = downloaded
-        self.current_hash = current_hash
+        self.__downloaded = downloaded
+        self.__current_hash = current_hash
 
     def to_dict(self):
         return {
-            'filename': self.filename,
-            'filesize': self.filesize,
-            'fileurl': self.fileurl,
-            'timecreated': self.timecreated,
-            'timemodified': self.timemodified,
-            'download': self.download,
-            'downloaded': self.downloaded,
+            'filename': self.__filename,
+            'filesize': self.__filesize,
+            'fileurl': self.__fileurl,
+            'timecreated': self.__timecreated,
+            'timemodified': self.__timemodified,
+            'download': self.__download,
+            'downloaded': self.__downloaded,
             'hash': hash(self)
         }
 
     def __hash__(self):
-        return hash((self.filename, self.filesize, self.fileurl, self.timecreated, self.timemodified))
+        return hash((self.__filename, self.__filesize, self.__fileurl, self.__timecreated, self.__timemodified))

@@ -30,6 +30,8 @@ def first_run() -> Config:
         populate_config(conn, obj)
         state.append(obj)
 
+    print(state)
+
 
 
     conn.close()
