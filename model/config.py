@@ -1,11 +1,10 @@
+import logging
+
 from model.Identifiable import Identifiable
 from model.course import Course
 
 
 class Config(Identifiable):
-    token = ''
-    courses = []
-
     @staticmethod
     def create_from_db(info: tuple):
         return Config(info[0], info[1], info[2], info[3], info[4], info[5], info[6])
@@ -51,3 +50,37 @@ class Config(Identifiable):
             'default_action': self.__default_action
         }
 
+    def get_host(self):
+        return self.__host
+
+    def get_token(self):
+        return self.__token
+
+    def get_userid(self):
+        return self.__userid
+
+    def update_userid(self, userid: int):
+        """ Returns False if the userid has changed or is invalid. If it is different, it will update the object with
+        the new one and return True """
+        if not isinstance(userid, int):
+            logging.error("The given userid isn't valid")
+            return False
+
+        if userid == self.__userid:
+            logging.info("The userid hasn't changed")
+            return False
+
+        self.__userid = userid
+        return True
+
+    def get_username(self):
+        return self.__username
+
+    def get_password(self):
+        return self.__password
+
+    def set_token(self, token: str):
+        if not isinstance(token, str):
+            logging.error("The given token isn't valid")
+            return
+        self.__token = token
