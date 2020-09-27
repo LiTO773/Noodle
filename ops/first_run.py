@@ -26,7 +26,8 @@ def first_run() -> Infos:
             sys.exit(-1)
 
         # Login complete, get the user's info
-        state = Infos(content['host'], content['username'], content['password'], content['courses'], token)
+        state = Infos(content['host'], content['username'], content['password'], content['courses'],
+                      content['default_action'], token)
         get_site_info(state)
 
         return state

@@ -1,11 +1,12 @@
 class Infos:
     userid = -1
 
-    def __init__(self, host, username, password, courses, token):
+    def __init__(self, host, username, password, courses, default_action, token):
         self.host = host
         self.username = username
         self.password = password
         self.courses = courses
+        self.default_action = default_action
         self.token = token
 
     def __str__(self):

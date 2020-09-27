@@ -4,5 +4,5 @@ CONFIG_BODY = {
     'password': '',
     'host': '',
     'courses': {},
-    'default_new_course': 'download'
+    'default_action': 'download'
 }
