@@ -2,12 +2,12 @@ import logging
 
 from fileops.write_config import write_config
 from model.course import Course
-from model.infos import Infos
+from model.config import Config
 from moodlews.get_course_contents import get_course_contents
 from moodlews.get_courses import get_courses
 
 
-def check_contents(state: Infos):
+def check_contents(state: Config):
     """ This function is responsible for checking all the contents available in the user's Moodle. Any alterations
     will be writing to the config file and the corresponding files downloaded """
     courses = get_courses(state)
@@ -35,7 +35,7 @@ def check_contents(state: Infos):
         logging.info("Downloading")
 
 
-def __check_courses_differences(state: Infos, courses_id_received: list):
+def __check_courses_differences(state: Config, courses_id_received: list):
     """ This function is responsible for checking if new courses appeared or if there was any change to the downloaded
     courses"""
 

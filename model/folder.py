@@ -4,34 +4,55 @@ from model.file import File
 
 class Folder(ConvertToDict):
     """ This class stores the information of a Moodle folder """
-    def __init__(self, body: dict, download=True):
-        self.__create(body['id'], body['name'], body['url'], download)
+    @staticmethod
+    def create_from_db(info: tuple):
+        folder = Folder(info[0], info[2], info[3], info[4])
+        folder.__set_remaining_params(info[5], info[6])
+        return folder
+
+    @staticmethod
+    def create_from_json(body: dict, download=False):
+        folder = Folder(body['id'], body['name'], body['url'], download)
 
         for content in body['contents']:
             new_file = File.create_file_or_url(content)
             if new_file is not None:
-                self.files.append(new_file)
+                folder.add_file(new_file)
 
-    def __create(self, id, name, url, download=True):
-        self.id = id
-        self.name = name
-        self.url = url
-        self.download = download
-        self.downloaded = False
-        self.files = []
+    def __init__(self, id, name, url, download=False):
+        self.__id = id
+        self.__name = name
+        self.__url = url
+        self.__download = download
+        self.__downloaded = False
+        self.__files = []
+
+    def id(self):
+        return self.__id
+
+    def add_file(self, file):
+        self.__files.append(file)
+
+    def add_files(self, files: list):
+        self.__files = files.copy()
+
+    def __set_remaining_params(self, downloaded, current_hash):
+        """ Used to add parameters already available in the DB """
+        self.__downloaded = downloaded
+        self.__current_hash = current_hash
 
     def to_dict(self):
         files_dict = []
 
-        for file in self.files:
+        for file in self.__files:
             files_dict.append(file.to_dict())
 
         return {
-            'id': self.id,
-            'name': self.name,
-            'url': self.url,
-            'download': self.download,
-            'downloaded': self.downloaded,
+            'id': self.__id,
+            'name': self.__name,
+            'url': self.__url,
+            'download': self.__download,
+            'downloaded': self.__downloaded,
             'files': files_dict,
             'hash': hash(self)
         }
@@ -39,7 +60,7 @@ class Folder(ConvertToDict):
     def __hash__(self):
         file_hash_str = 0
 
-        for file in self.files:
+        for file in self.__files:
             file_hash_str += hash(file)
 
-        return hash((self.id, self.url, file_hash_str))
+        return hash((self.__id, self.__url, file_hash_str))

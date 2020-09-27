@@ -1,10 +1,10 @@
 import requests
 import json
 from errors.error_codes import UNABLE_TO_LOGIN
-from model.infos import Infos
+from model.config import Config
 
 
-def _moodle_request(infos: Infos, wsfunction: str, extras: dict = {}) -> dict:
+def _moodle_request(infos: Config, wsfunction: str, extras: dict = {}) -> dict:
     """ This is an helper function that streamlines the requests made to Moodle's Web Services """
     url = infos.host + ('/' if infos.host[-1] != '/' else '') + 'webservice/rest/server.php'
     params = {'wstoken': infos.token, 'wsfunction': wsfunction, 'moodlewsrestformat': 'json'}
