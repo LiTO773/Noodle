@@ -1,10 +1,7 @@
 from sqlite3 import Connection
 
-from db.get_config_courses import get_config_courses
-from db.get_config_files import get_config_files
-from db.get_config_folders import get_config_folders
-from db.get_config_sections import get_config_sections
-from db.get_config_urls import get_config_urls
+from db.query_config import get_config_courses, get_config_files, get_config_folders, get_config_sections, \
+    get_config_urls
 from model.config import Config
 from model.course import Course, Section
 from model.file import File
