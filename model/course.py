@@ -57,6 +57,9 @@ class Course(Identifiable, ConvertToDict):
 
         return hash((self.__id, section_hash_str))
 
+    def add_section(self, section: Section):
+        self.__sections.append(section)
+
     def get_shortname(self):
         return self.__shortname
 

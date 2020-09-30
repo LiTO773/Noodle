@@ -10,9 +10,13 @@ from model.url import URL
 
 
 def populate_config(conn: Connection, config: Config):
-    """ This function is responsible for populating a config with the information present in the DB """
+    """
+    This function is responsible for adding the already present courses to the config.
+    THIS FUNCTION MUTATES THE config PARAM
+    :param conn: DB connection
+    :param config: Moodle configuration
+    """
     rows = get_config_courses(conn, config.id())
-    courses = []
 
     # Create the courses and populate each one
     # TODO test this code
@@ -21,7 +25,6 @@ def populate_config(conn: Connection, config: Config):
 
         # Create the sections and populate each one
         rows_sections = get_config_sections(conn, course.id())
-        sections = []
 
         for r_section in rows_sections:
             section = Section.create_from_db(r_section)
@@ -34,8 +37,9 @@ def populate_config(conn: Connection, config: Config):
                 folder.add_files(__fetch_files_and_urls(conn, folder.id(), False))
                 section.add_file(folder)
 
-            sections.append(section)
-        courses.append(course)
+            course.add_section(section)
+
+        config.add_course(course)
 
 
 def __fetch_files_and_urls(conn: Connection, id: int, is_section: bool) -> list:

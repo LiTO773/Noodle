@@ -47,7 +47,5 @@ def first_run() -> (list, Connection):
 
         state.append(config)
 
-    print(state[0])
-
     return state, conn
 
