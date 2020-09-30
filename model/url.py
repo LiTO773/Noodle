@@ -9,6 +9,10 @@ class URL(ConvertToDict):
         url.__set_remaining_params(info[6], info[7])
         return url
 
+    @staticmethod
+    def create_from_json(body: dict, download=False):
+        return URL(body['filename'], body['fileurl'], body['timemodified'], download)
+
     def __init__(self, filename: str, fileurl: str, timemodified: int, download: bool = False):
         self.__filename = filename
         self.__fileurl = fileurl

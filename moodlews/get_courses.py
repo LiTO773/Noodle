@@ -1,8 +1,10 @@
+from typing import Dict
+
 from model.config import Config
 from .moodle_request import _moodle_request
 
 
-def get_courses(state: Config) -> dict:
+def get_courses(state: Config) -> Dict[int, str]:
     """ This function gets all the courses available to the user and returns their id and shortname as a dict """
     body = _moodle_request(state, 'core_enrol_get_users_courses', {'userid': state.get_userid()})
 

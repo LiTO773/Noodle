@@ -1,4 +1,5 @@
 import sys
+from sqlite3 import Connection
 
 from db.create_connection import create_connection
 from db.read_configs import read_configs
@@ -16,7 +17,7 @@ import logging
 from ops.populate_config import populate_config
 
 
-def first_run() -> Config:
+def first_run() -> (list, Connection):
     """ This function is launched when the app starts and makes sure that everything is properly setup. If everything
     ran correctly, it returns the token. Otherwise it stops the application. """
     conn = create_connection()
@@ -46,31 +47,7 @@ def first_run() -> Config:
 
         state.append(config)
 
-    print(state)
+    print(state[0])
 
-    conn.close()
+    return state, conn
 
-    # result = check_config()
-    # if isinstance(result, dict):
-    #     logging.info('config.json is fine. Logging in.')
-    #     # The config file already exists, read it
-    #     token = login(result)
-    #
-    #     if token == UNABLE_TO_LOGIN:
-    #         logging.error(ERROR_STRINGS[UNABLE_TO_LOGIN])
-    #         sys.exit(-1)
-    #
-    #     # Login complete, get the user's info
-    #     state = Infos(result['host'], result['username'], result['password'], result['courses'],
-    #                   result['default_action'], token)
-    #     get_site_info(state)
-    #
-    #     return state
-    # else:
-    #     if result == CONFIG_FILE_DOESNT_EXIST:
-    #         logging.error("config.json doesn't exist, creating it. Please fill it and run again.")
-    #         create_config()
-    #         sys.exit(-1)
-    #     else:
-    #         logging.error(ERROR_STRINGS[result])
-    #         sys.exit(-1)

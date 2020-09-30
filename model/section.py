@@ -27,16 +27,16 @@ class Section(Identifiable, ConvertToDict):
     def id(self):
         return self.__id
 
-    def read_json(self, body: dict):
+    def read_json_contents(self, body: dict):
         for module in body:
             if module['modname'] == 'resource':
                 # It's either a file or a URL
-                new_file = File.create_file_or_url(module['contents'][0])
+                new_file = File.create_file_or_url(module['contents'][0], self.__download)
                 if new_file is not None:
                     self.__files.append(new_file)
             elif module['modname'] == 'folder':
                 # It's a folder
-                new_folder = Folder(module)
+                new_folder = Folder.create_from_json(module, self.__download)
                 self.__files.append(new_folder)
 
     def add_files(self, files: list):
@@ -67,3 +67,12 @@ class Section(Identifiable, ConvertToDict):
             file_hash_str += hash(file)
 
         return hash((self.__id, file_hash_str))
+
+    def get_name(self):
+        return self.__name
+
+    def get_download(self):
+        return self.__download
+
+    def get_files(self):
+        return self.__files

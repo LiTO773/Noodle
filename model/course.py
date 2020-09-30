@@ -18,7 +18,7 @@ class Course(Identifiable, ConvertToDict):
         self.__downloaded = downloaded
         self.__current_hash = current_hash
 
-    def __init__(self, id, shortname, download=False):
+    def __init__(self, id: int, shortname: str, download: bool=False):
         self.__id = id
         self.__shortname = shortname
         self.__download = download
@@ -28,10 +28,10 @@ class Course(Identifiable, ConvertToDict):
     def id(self):
         return self.__id
 
-    def read_json(self, body: dict):
+    def read_json_contents(self, body: dict):
         for section in body:
-            new_section = Section(section['id'], section['name'], self.download)
-            new_section.read_json(section['modules'])
+            new_section = Section(section['id'], section['name'], self.__download)
+            new_section.read_json_contents(section['modules'])
             self.__sections.append(new_section)
 
     def to_dict(self):
@@ -56,3 +56,12 @@ class Course(Identifiable, ConvertToDict):
             section_hash_str += hash(section)
 
         return hash((self.__id, section_hash_str))
+
+    def get_shortname(self):
+        return self.__shortname
+
+    def get_download(self):
+        return self.__download
+
+    def get_sections(self):
+        return self.__sections

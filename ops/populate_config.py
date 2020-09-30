@@ -6,6 +6,7 @@ from model.config import Config
 from model.course import Course, Section
 from model.file import File
 from model.folder import Folder
+from model.url import URL
 
 
 def populate_config(conn: Connection, config: Config):
@@ -19,15 +20,15 @@ def populate_config(conn: Connection, config: Config):
         course = Course.create_from_db(row)
 
         # Create the sections and populate each one
-        rows_sections = get_config_sections(conn, course.id)
+        rows_sections = get_config_sections(conn, course.id())
         sections = []
 
         for r_section in rows_sections:
             section = Section.create_from_db(r_section)
-            section.add_files(__fetch_files_and_urls(conn, section.id, True))
+            section.add_files(__fetch_files_and_urls(conn, section.id(), True))
 
             # Create the folders, populate each one and add them to the section
-            rows_folders = get_config_folders(conn, section.id)
+            rows_folders = get_config_folders(conn, section.id())
             for r_folder in rows_folders:
                 folder = Folder.create_from_db(r_folder)
                 folder.add_files(__fetch_files_and_urls(conn, folder.id(), False))
@@ -49,6 +50,6 @@ def __fetch_files_and_urls(conn: Connection, id: int, is_section: bool) -> list:
     # Create the urls, populate each one and add them to the section
     rows = get_config_urls(conn, id, is_section)
     for row in rows:
-        result.append(File.create_from_db(row))
+        result.append(URL.create_from_db(row))
 
     return result

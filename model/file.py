@@ -4,6 +4,7 @@ from model.url import URL
 
 class File(ConvertToDict):
     """ This class stores the information of a Moodle file """
+
     @staticmethod
     def create_from_db(info: tuple):
         file = File(info[2], info[3], info[4], info[5], info[6], info[7])
@@ -11,17 +12,17 @@ class File(ConvertToDict):
         return file
 
     @staticmethod
-    def create_from_json(body: dict, download=True):
+    def create_from_json(body: dict, download=False):
         return File(body['filename'], body['filesize'], body['fileurl'], body['timecreated'], body['timemodified'],
-                      download)
+                    download)
 
     @staticmethod
-    def create_file_or_url(body: dict):
+    def create_file_or_url(body: dict, download=False):
         """ Returns a file, a URL or None if it is none of those """
         if body['type'] == 'file':
-            return File(body)
+            return File.create_from_json(body, download)
         elif body['type'] == 'url':
-            return URL(body)
+            return URL.create_from_json(body, download)
 
         return None
 
@@ -54,3 +55,21 @@ class File(ConvertToDict):
 
     def __hash__(self):
         return hash((self.__filename, self.__filesize, self.__fileurl, self.__timecreated, self.__timemodified))
+
+    def get_name(self):
+        return self.__filename
+
+    def get_size(self):
+        return self.__filesize
+
+    def get_url(self):
+        return self.__fileurl
+
+    def get_time_created(self):
+        return self.__timecreated
+
+    def get_time_modified(self):
+        return self.__timemodified
+
+    def get_download(self):
+        return self.__download

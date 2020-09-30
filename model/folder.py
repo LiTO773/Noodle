@@ -15,7 +15,7 @@ class Folder(ConvertToDict):
         folder = Folder(body['id'], body['name'], body['url'], download)
 
         for content in body['contents']:
-            new_file = File.create_file_or_url(content)
+            new_file = File.create_file_or_url(content, download)
             if new_file is not None:
                 folder.add_file(new_file)
 
@@ -64,3 +64,15 @@ class Folder(ConvertToDict):
             file_hash_str += hash(file)
 
         return hash((self.__id, self.__url, file_hash_str))
+
+    def get_name(self):
+        return self.__name
+
+    def get_url(self):
+        return self.__url
+
+    def get_download(self):
+        return self.__download
+
+    def get_files(self):
+        return self.__files

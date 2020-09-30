@@ -18,7 +18,7 @@ class Config(Identifiable):
         self.__default_action = default_action
         self.__userid = userid
         self.__token = ''
-        self.__courses = []
+        self.__courses = {}
 
     def id(self):
         return self.__id
@@ -84,3 +84,9 @@ class Config(Identifiable):
             logging.error("The given token isn't valid")
             return
         self.__token = token
+
+    def get_courses(self):
+        return self.__courses
+
+    def get_default_action(self):
+        return self.__default_action
