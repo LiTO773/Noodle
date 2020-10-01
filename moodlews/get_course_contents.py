@@ -1,4 +1,3 @@
-from errors.error_codes import UNABLE_TO_LOGIN
 from model.config import Config
 from .moodle_request import _moodle_request
 

@@ -3,8 +3,8 @@ from sqlite3 import Connection
 from typing import Dict
 
 from db.inserts import insert_course
-from model.course import Course
 from model.config import Config
+from model.course import Course
 from moodlews.get_course_contents import get_course_contents
 from moodlews.get_courses import get_courses
 

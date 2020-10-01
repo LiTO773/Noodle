@@ -1,19 +1,15 @@
+import logging
 import sys
 from sqlite3 import Connection
 
 from db.create_connection import create_connection
 from db.read_configs import read_configs
 from db.updates import update_config_userid
-from fileops.check_config import check_config
-from fileops.create_config import create_config
-from fileops.read_config import read_config
+from errors.error_codes import UNABLE_TO_LOGIN
+from errors.error_strings import ERROR_STRINGS
 from model.config import Config
 from moodlews.get_site_info import get_site_info
 from moodlews.login import login
-from errors.error_codes import CONFIG_FILE_BADLY_FORMATTED, CONFIG_FILE_DOESNT_EXIST, UNABLE_TO_LOGIN
-from errors.error_strings import ERROR_STRINGS
-import logging
-
 from ops.populate_config import populate_config
 
 

@@ -1,5 +1,7 @@
-import requests
 import json
+
+import requests
+
 from errors.error_codes import UNABLE_TO_LOGIN
 from model.config import Config
 
