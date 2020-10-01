@@ -18,6 +18,7 @@ def check_contents(conn: Connection, state: Config):
     """
     courses = get_courses(state)
 
+    # Check for new courses
     new_courses = __add_new_courses(conn, state, courses)
 
     # Check for alterations in the downloaded courses
@@ -51,6 +52,8 @@ def __add_new_courses(conn: Connection, state: Config, courses: Dict[int, str]) 
         elif state.get_default_action() == 'download':
         # TODO Download
             logging.info("Downloading")
+
+    return new_courses
 
 
 def __check_courses_differences(state: Config, courses_id_received: list):
