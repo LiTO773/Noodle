@@ -1,10 +1,8 @@
-from errors.error_codes import UNABLE_TO_LOGIN
-from model.infos import Infos
+from model.config import Config
 from .moodle_request import _moodle_request
 
 
-def get_site_info(state: Infos):
-    """ This function is used to get the necessary params to communicate with the Moodle Web Services.
-    THE PARAM state IS MUTATED IN THIS FUNCTION"""
+def get_site_info(state: Config) -> (int, str):
+    """ This function is used to get the userid which is necessary to communicate with the Moodle Web Services."""
     body = _moodle_request(state, 'core_webservice_get_site_info')
-    state.userid = body['userid']
+    return body['userid']
