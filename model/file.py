@@ -1,6 +1,7 @@
 from model.Downloadable import Downloadable
 from model.url import URL
 
+
 class File(Downloadable):
     """ This class stores the information of a Moodle file """
 

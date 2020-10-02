@@ -49,6 +49,9 @@ class Course(Identifiable, ContentWrapper):
     def get_shortname(self):
         return self.__shortname
 
+    def get_name(self):
+        return self.__shortname
+
     def get_download(self):
         return self.__download
 

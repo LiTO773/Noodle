@@ -6,3 +6,6 @@ class ContentWrapper(Downloadable):
     urls) """
     def get_contents(self):
         pass
+
+    def get_name(self):
+        pass
