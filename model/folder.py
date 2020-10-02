@@ -1,8 +1,7 @@
-from model.ConvertToDict import ConvertToDict
 from model.file import File
 
 
-class Folder(ConvertToDict):
+class Folder:
     """ This class stores the information of a Moodle folder """
     @staticmethod
     def create_from_db(info: tuple):
@@ -40,22 +39,6 @@ class Folder(ConvertToDict):
         """ Used to add parameters already available in the DB """
         self.__downloaded = downloaded
         self.__current_hash = current_hash
-
-    def to_dict(self):
-        files_dict = []
-
-        for file in self.__files:
-            files_dict.append(file.to_dict())
-
-        return {
-            'id': self.__id,
-            'name': self.__name,
-            'url': self.__url,
-            'download': self.__download,
-            'downloaded': self.__downloaded,
-            'files': files_dict,
-            'hash': hash(self)
-        }
 
     def __hash__(self):
         file_hash_str = 0

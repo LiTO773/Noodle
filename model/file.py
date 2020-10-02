@@ -1,8 +1,7 @@
-from model.ConvertToDict import ConvertToDict
 from model.url import URL
 
 
-class File(ConvertToDict):
+class File:
     """ This class stores the information of a Moodle file """
 
     @staticmethod
@@ -40,18 +39,6 @@ class File(ConvertToDict):
         """ Used to add parameters already available in the DB """
         self.__downloaded = downloaded
         self.__current_hash = current_hash
-
-    def to_dict(self):
-        return {
-            'filename': self.__filename,
-            'filesize': self.__filesize,
-            'fileurl': self.__fileurl,
-            'timecreated': self.__timecreated,
-            'timemodified': self.__timemodified,
-            'download': self.__download,
-            'downloaded': self.__downloaded,
-            'hash': hash(self)
-        }
 
     def __hash__(self):
         return hash((self.__filename, self.__filesize, self.__fileurl, self.__timecreated, self.__timemodified))

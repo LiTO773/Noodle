@@ -1,10 +1,9 @@
-from model.ConvertToDict import ConvertToDict
 from model.Identifiable import Identifiable
 from model.file import File
 from model.folder import Folder
 
 
-class Section(Identifiable, ConvertToDict):
+class Section(Identifiable):
     """ This class is responsible for storing the information about a course's section """
     @staticmethod
     def create_from_db(info: tuple):
@@ -44,21 +43,6 @@ class Section(Identifiable, ConvertToDict):
 
     def add_file(self, file):
         self.__files.append(file)
-
-    def to_dict(self):
-        files_dict = []
-
-        for file in self.__files:
-            files_dict.append(file.to_dict())
-
-        return {
-            'id': self.__id,
-            'name': self.__name,
-            'download': self.__download,
-            'downloaded': self.__downloaded,
-            'files': files_dict,
-            'hash': hash(self)
-        }
 
     def __hash__(self):
         file_hash_str = 0

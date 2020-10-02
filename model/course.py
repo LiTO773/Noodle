@@ -1,9 +1,8 @@
-from model.ConvertToDict import ConvertToDict
 from model.Identifiable import Identifiable
 from model.section import Section
 
 
-class Course(Identifiable, ConvertToDict):
+class Course(Identifiable):
     """ This class is responsible for storing all the info about a course """
 
     @staticmethod
@@ -33,21 +32,6 @@ class Course(Identifiable, ConvertToDict):
             new_section = Section(section['id'], section['name'], self.__download)
             new_section.read_json_contents(section['modules'])
             self.__sections.append(new_section)
-
-    def to_dict(self):
-        section_dict = []
-
-        for section in self.__sections:
-            section_dict.append(section.to_dict())
-
-        return {
-            'id': self.__id,
-            'shortname': self.__shortname,
-            'download': self.__download,
-            'downloaded': self.__downloaded,
-            'sections': section_dict,
-            'hash': hash(self)
-        }
 
     def __hash__(self):
         section_hash_str = 0
