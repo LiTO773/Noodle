@@ -7,9 +7,9 @@ from model.course import Course
 class Config(Identifiable):
     @staticmethod
     def create_from_db(info: tuple):
-        return Config(info[0], info[1], info[2], info[3], info[4], info[5], info[6])
+        return Config(info[0], info[1], info[2], info[3], info[4], info[5], info[6], info[7])
 
-    def __init__(self, id, host, username, password, max_download_size, default_action, userid):
+    def __init__(self, id, host, username, password, max_download_size, default_action, userid, location):
         self.__id = id
         self.__host = host
         self.__username = username
@@ -17,6 +17,7 @@ class Config(Identifiable):
         self.__max_download_size = max_download_size
         self.__default_action = default_action
         self.__userid = userid
+        self.__location = location
         self.__token = ''
         self.__courses = {}
 
@@ -90,3 +91,6 @@ class Config(Identifiable):
 
     def get_default_action(self):
         return self.__default_action
+
+    def get_location(self):
+        return self.__location

@@ -18,11 +18,11 @@ def first_run() -> (list, Connection):
     ran correctly, it returns the token. Otherwise it stops the application. """
     conn = create_connection()
 
-    configs = read_configs(conn)
+    db_configs = read_configs(conn)
 
     # Create the state and the config objects and populate them with their data
     state = []
-    for db_config in configs:
+    for db_config in db_configs:
         config = Config.create_from_db(db_config)
         populate_config(conn, config)
 

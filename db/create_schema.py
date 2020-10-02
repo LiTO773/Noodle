@@ -11,7 +11,8 @@ __schema = [
         password text NOT NULL,
         max_file_size integer NOT NULL,
         default_action text NOT NULL,
-        userid integer DEFAULT -1
+        userid integer DEFAULT -1,
+        locattion text NOT NULL
     );""",
     """
     CREATE TABLE IF NOT EXISTS courses (
