@@ -4,7 +4,7 @@ from model.Identifiable import Identifiable
 from model.section import Section
 
 
-class Course(Identifiable, Downloadable, ContentWrapper):
+class Course(Identifiable, ContentWrapper):
     """ This class is responsible for storing all the info about a course """
 
     @staticmethod

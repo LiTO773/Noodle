@@ -1,4 +1,7 @@
-class URL:
+from model.Downloadable import Downloadable
+
+
+class URL(Downloadable):
     """ This class stores the information of a Moodle folder """
     @staticmethod
     def create_from_db(info: tuple):
@@ -23,7 +26,7 @@ class URL:
         self.__current_hash = current_hash
 
     def __hash__(self):
-        return hash((self.__filename, self.__filesize, self.__fileurl))
+        return hash((self.__filename, self.__fileurl))
 
     def get_name(self):
         return self.__filename

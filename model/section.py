@@ -1,11 +1,10 @@
 from model.ContentWrapper import ContentWrapper
-from model.Downloadable import Downloadable
 from model.Identifiable import Identifiable
 from model.file import File
 from model.folder import Folder
 
 
-class Section(Identifiable, Downloadable, ContentWrapper):
+class Section(Identifiable, ContentWrapper):
     """ This class is responsible for storing the information about a course's section """
     @staticmethod
     def create_from_db(info: tuple):

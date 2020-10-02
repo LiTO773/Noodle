@@ -1,10 +1,9 @@
 from model.ContentWrapper import ContentWrapper
-from model.Downloadable import Downloadable
 from model.Identifiable import Identifiable
 from model.file import File
 
 
-class Folder(Identifiable, Downloadable, ContentWrapper):
+class Folder(Identifiable, ContentWrapper):
     """ This class stores the information of a Moodle folder """
     @staticmethod
     def create_from_db(info: tuple):
