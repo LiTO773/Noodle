@@ -37,20 +37,6 @@ class Config(Identifiable):
     def add_course(self, course: Course):
         self.__courses[course.id()] = course
 
-    def to_writable_dict(self):
-        dict_courses = {}
-
-        for course in self.__courses:
-            dict_courses[course] = self.__courses[course].to_dict()
-
-        return {
-            'host': self.__host,
-            'username': self.__username,
-            'password': self.__password,
-            'courses': dict_courses,
-            'default_action': self.__default_action
-        }
-
     def get_host(self):
         return self.__host
 

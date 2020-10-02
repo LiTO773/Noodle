@@ -1,9 +1,11 @@
+from model.ContentWrapper import ContentWrapper
+from model.Downloadable import Downloadable
 from model.Identifiable import Identifiable
 from model.file import File
 from model.folder import Folder
 
 
-class Section(Identifiable):
+class Section(Identifiable, Downloadable, ContentWrapper):
     """ This class is responsible for storing the information about a course's section """
     @staticmethod
     def create_from_db(info: tuple):
@@ -58,5 +60,11 @@ class Section(Identifiable):
     def get_download(self):
         return self.__download
 
+    def get_downloaded(self):
+        return self.__downloaded
+
     def get_files(self):
         return self.__files
+
+    def get_contents(self):
+        return self.get_files()

@@ -1,8 +1,10 @@
+from model.ContentWrapper import ContentWrapper
+from model.Downloadable import Downloadable
 from model.Identifiable import Identifiable
 from model.section import Section
 
 
-class Course(Identifiable):
+class Course(Identifiable, Downloadable, ContentWrapper):
     """ This class is responsible for storing all the info about a course """
 
     @staticmethod
@@ -50,5 +52,11 @@ class Course(Identifiable):
     def get_download(self):
         return self.__download
 
+    def get_downloaded(self):
+        return self.__downloaded
+
     def get_sections(self):
         return self.__sections
+
+    def get_contents(self):
+        return self.get_sections()
