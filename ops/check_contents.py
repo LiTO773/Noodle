@@ -3,6 +3,7 @@ from sqlite3 import Connection
 from typing import Dict
 
 from db.inserts import insert_course
+from fileops.download_course import download_course
 from model.config import Config
 from model.course import Course
 from moodlews.get_course_contents import get_course_contents
@@ -45,14 +46,16 @@ def __add_new_courses(conn: Connection, state: Config, courses: Dict[int, str]) 
         # DB
         insert_course(conn, course, state.id())
 
-        # Check what to do
-        if state.get_default_action() == 'notify':
-        # TODO Better notification
-            logging.warning("New courses were found, please change the config.json to which contents you want to download.")
-        elif state.get_default_action() == 'download':
-        # TODO Download
-            logging.info("Downloading")
-
+    # Download the courses or notify
+    if state.get_default_action() == 'notify':
+        # Notify
+        logging.warning("New courses were found, please change the config.json to which contents you want to download.")
+    elif state.get_default_action() == 'download':
+        # Download
+        logging.info("Downloading")
+        for course_key in state.get_courses():
+            course = state.get_courses()[course_key]
+            download_course(course, state)
     return new_courses
 
 
