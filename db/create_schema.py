@@ -16,34 +16,37 @@ __schema = [
     );""",
     """
     CREATE TABLE IF NOT EXISTS courses (
-        id integer PRIMARY KEY,
+        id integer NOT NULL,
         moodle_id integer NOT NULL,
         shortname text NOT NULL,
         download integer NOT NULL,
         downloaded integer NOT NULL,
         hash integer NOT NULL,
-        FOREIGN KEY (moodle_id) REFERENCES configs (id)
+        FOREIGN KEY (moodle_id) REFERENCES configs (id),
+        PRIMARY KEY (id, moodle_id)
     );""",
     """
     CREATE TABLE IF NOT EXISTS sections (
-        id integer PRIMARY KEY,
+        id integer NOT NULL,
         course_id integer NOT NULL,
         name text NOT NULL,
         download integer NOT NULL,
         downloaded integer NOT NULL,
         hash integer NOT NULL,
-        FOREIGN KEY (course_id) REFERENCES courses (id)
+        FOREIGN KEY (course_id) REFERENCES courses (id),
+        PRIMARY KEY (id, course_id)
     );""",
     """
     CREATE TABLE IF NOT EXISTS folders (
-        id integer PRIMARY KEY,
+        id integer NOT NULL,
         section_id integer NOT NULL,
         name text NOT NULL,
         url text NOT NULL,
         download integer NOT NULL,
         downloaded integer NOT NULL,
         hash integer NOT NULL,
-        FOREIGN KEY (section_id) REFERENCES sections (id)
+        FOREIGN KEY (section_id) REFERENCES sections (id),
+        PRIMARY KEY (id, section_id)
     );""",
     """
     CREATE TABLE IF NOT EXISTS files (
