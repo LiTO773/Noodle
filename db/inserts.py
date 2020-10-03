@@ -3,7 +3,7 @@ from typing import Union
 
 from model.course import Course
 from model.file import File
-from model.folder import Folder
+from model.module import Module
 from model.section import Section
 from model.url import URL
 
@@ -50,7 +50,7 @@ def insert_section(conn: Connection, section: Section, course_id: int):
         __insert_module(conn, module, section.id())
 
 
-def __insert_module(conn: Connection, module: Union[File, Folder, URL], section_id: int):
+def __insert_module(conn: Connection, module: Union[File, Module, URL], section_id: int):
     """
     This function adds sections modules, automatically assigning the correct INSET for function for Files, Folders or
     URLs
@@ -61,7 +61,7 @@ def __insert_module(conn: Connection, module: Union[File, Folder, URL], section_
 
     if isinstance(module, File):
         insert_file(conn, module, section_id)
-    elif isinstance(module, Folder):
+    elif isinstance(module, Module):
         insert_folder(conn, module, section_id)
     elif isinstance(module, URL):
         insert_url(conn, module, section_id)
@@ -107,7 +107,7 @@ def insert_url(conn: Connection, url: URL, section_id: int = None, folder_id: in
     c.close()
 
 
-def insert_folder(conn: Connection, folder: Folder, section_id: int):
+def insert_folder(conn: Connection, folder: Module, section_id: int):
     """
     Adds a new folder to the DB
     :param conn: DB connection

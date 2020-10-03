@@ -30,6 +30,9 @@ class LinkableContent:
     It is possible, in the future, that some of this contents might be stored in their own data structure and persisted
     in the DB. When that's the case, please remove it from here :)
     """
+    @staticmethod
+    def create_from_db(info: tuple):
+        return LinkableContent(info[1], info[5], info[6], info[2], info[3], info[4])
 
     def __init__(self, modname: MoodlePossibleContents, name: str, url: str, section_id: int = None,
                  module_id: int = None, own_id: int = None):

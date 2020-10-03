@@ -3,22 +3,22 @@ from model.Identifiable import Identifiable
 from model.file import File
 
 
-class Folder(Identifiable, ContentWrapper):
+class Module(Identifiable, ContentWrapper):
     """ This class stores the information of a Moodle folder """
     @staticmethod
     def create_from_db(info: tuple):
-        folder = Folder(info[0], info[2], info[3], info[4])
+        folder = Module(info[0], info[2], info[3], info[4])
         folder.__set_remaining_params(info[5], info[6])
         return folder
 
     @staticmethod
     def create_from_json(body: dict, download=False):
-        folder = Folder(body['id'], body['name'], body['url'], download)
+        folder = Module(body['id'], body['name'], body['url'], download)
 
         for content in body['contents']:
             new_file = File.create_file_or_url(content, download)
             if new_file is not None:
-                folder.add_file(new_file)
+                folder.add_content(new_file)
 
     def __init__(self, id, name, url, download=False):
         self.__id = id
@@ -26,16 +26,16 @@ class Folder(Identifiable, ContentWrapper):
         self.__url = url
         self.__download = download
         self.__downloaded = False
-        self.__files = []
+        self.__contents = []
 
     def id(self):
         return self.__id
 
-    def add_file(self, file):
-        self.__files.append(file)
+    def add_content(self, file):
+        self.__contents.append(file)
 
-    def add_files(self, files: list):
-        self.__files = files.copy()
+    def add_contents(self, files: list):
+        self.__contents = files.copy()
 
     def __set_remaining_params(self, downloaded, current_hash):
         """ Used to add parameters already available in the DB """
@@ -45,7 +45,7 @@ class Folder(Identifiable, ContentWrapper):
     def __hash__(self):
         file_hash_str = 0
 
-        for file in self.__files:
+        for file in self.__contents:
             file_hash_str += hash(file)
 
         return hash((self.__id, self.__url, file_hash_str))
@@ -63,7 +63,7 @@ class Folder(Identifiable, ContentWrapper):
         return self.__downloaded
 
     def get_files(self):
-        return self.__files
+        return self.__contents
 
     def get_contents(self):
         return self.get_files()

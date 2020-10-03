@@ -1,7 +1,10 @@
+from typing import List, Union
+
 from model.ContentWrapper import ContentWrapper
 from model.Identifiable import Identifiable
+from model.LinkableContents import LinkableContent
 from model.file import File
-from model.folder import Folder
+from model.module import Module
 
 
 class Section(Identifiable, ContentWrapper):
@@ -22,7 +25,7 @@ class Section(Identifiable, ContentWrapper):
         self.__name = name
         self.__download = download
         self.__downloaded = False
-        self.__files = []
+        self.__modules = []
 
     def id(self):
         return self.__id
@@ -33,22 +36,22 @@ class Section(Identifiable, ContentWrapper):
                 # It's either a file or a URL
                 new_file = File.create_file_or_url(module['contents'][0], self.__download)
                 if new_file is not None:
-                    self.__files.append(new_file)
+                    self.__modules.append(new_file)
             elif module['modname'] == 'folder':
                 # It's a folder
-                new_folder = Folder.create_from_json(module, self.__download)
-                self.__files.append(new_folder)
+                new_folder = Module.create_from_json(module, self.__download)
+                self.__modules.append(new_folder)
 
-    def add_files(self, files: list):
-        self.__files = files.copy()
+    def add_modules(self, files: List[Union[Module, LinkableContent]]):
+        self.__modules = files.copy()
 
-    def add_file(self, file):
-        self.__files.append(file)
+    def add_module(self, file):
+        self.__modules.append(file)
 
     def __hash__(self):
         file_hash_str = 0
 
-        for file in self.__files:
+        for file in self.__modules:
             file_hash_str += hash(file)
 
         return hash((self.__id, file_hash_str))
@@ -63,7 +66,7 @@ class Section(Identifiable, ContentWrapper):
         return self.__downloaded
 
     def get_files(self):
-        return self.__files
+        return self.__modules
 
     def get_contents(self):
         return self.get_files()
