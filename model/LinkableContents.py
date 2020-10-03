@@ -1,9 +1,7 @@
-from abc import ABC, abstractmethod
-
 from model.MoodlePossibleContents import MoodlePossibleContents
 
 
-class LinkableContent(ABC):
+class LinkableContent:
     """
     Linkable Contents are contents present in Moodle that the application won't download, just keep their url.
 
@@ -33,32 +31,40 @@ class LinkableContent(ABC):
     in the DB. When that's the case, please remove it from here :)
     """
 
-    def __init__(self, representing: MoodlePossibleContents, parent_id: int, name: str, url: str, own_id: int = None):
+    def __init__(self, modname: MoodlePossibleContents, name: str, url: str, section_id: int = None,
+                 module_id: int = None, own_id: int = None):
         """
         Creates a LinkableContent
-        :param representing: What the class is representing (could be a Quiz, URL, Assignment, etc.)
-        :param parent_id: ID of the parent, likely a section or a module
-        :param own_id: It's own ID. This parameter is optional, since materials in the "contents" section of a module
-        don't have an ID
+        :param modname: What the class is representing (could be a Quiz, URL, Assignment, etc.)
         :param name: Name of the content
         :param url: URL of the content
+        :param section_id: ID of the section (can be None if module_id is filled)
+        :param module_id: ID of the module (can be None if section_id is filled)
+        :param own_id: It's own ID. This parameter is optional, since materials in the "contents" section of a module
+        don't have an ID
         """
-        self.__representing = representing
-        self.__parent_id = parent_id
+        self.__modname = modname
+        self.__section_id = section_id
+        self.__module_id = module_id
         self.__own_id = own_id
         self.__name = name
         self.__url = url
 
     # GETTERS
     @property
-    def representing(self):
-        """ Representing property """
-        return self.__representing
+    def modname(self):
+        """ Modname property """
+        return self.__modname
 
     @property
-    def parent_id(self):
-        """ Parent_id property """
-        return self.__parent_id
+    def section_id(self):
+        """ Section_id property """
+        return self.__section_id
+
+    @property
+    def module_id(self):
+        """ Module_id property """
+        return self.__module_id
 
     @property
     def own_id(self):
@@ -75,7 +81,6 @@ class LinkableContent(ABC):
         """ URL property """
         return self.__url
 
-    @abstractmethod
-    @property
-    def content_id(self):
-        pass
+    # Hash
+    def __hash__(self):
+        return hash((self.__name, self.__url))
