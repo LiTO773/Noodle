@@ -4,7 +4,7 @@ from typing import List, Union
 from db.queries import get_config_courses, get_section_modules, get_course_sections, get_section_linkablecontents, \
     get_module_linkablecontents, get_module_files
 from model.LinkableContents import LinkableContent
-from model.config import Config
+from model.Config import Config
 from model.course import Course, Section
 from model.file import File
 from model.module import Module
@@ -18,7 +18,7 @@ def populate_config(conn: Connection, config: Config):
     :param conn: DB connection
     :param config: Moodle configuration
     """
-    rows = get_config_courses(conn, config.id())
+    rows = get_config_courses(conn, config.id)
 
     # Create the courses and populate each one
     # TODO test this code
@@ -26,24 +26,24 @@ def populate_config(conn: Connection, config: Config):
         course = Course.create_from_db(row)
 
         # Create the sections and populate each one
-        rows_sections = get_course_sections(conn, config.id(), course.id())
+        rows_sections = get_course_sections(conn, config.id, course.id())
 
         for r_section in rows_sections:
             section = Section.create_from_db(r_section)
 
             # Add the LinkableContents
-            section.add_modules(__get_linkablecontents(conn, config.id(), section.id(), True))
+            section.add_modules(__get_linkablecontents(conn, config.id, section.id(), True))
 
             # Create the modules, populate each one and add them to the section
-            rows_modules = get_section_modules(conn, config.id(), section.id())
+            rows_modules = get_section_modules(conn, config.id, section.id())
             for r_module in rows_modules:
                 module = Module.create_from_db(r_module)
 
                 # Add the LinkableContents
-                module.add_contents(__get_linkablecontents(conn, config.id(), module.id(), False))
+                module.add_contents(__get_linkablecontents(conn, config.id, module.id(), False))
 
                 # Add the Files
-                rows_files = get_module_files(conn, config.id(), module.id())
+                rows_files = get_module_files(conn, config.id, module.id())
 
                 for r_file in rows_files:
                     module.add_content(File.create_file_or_url(r_file))

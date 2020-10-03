@@ -7,7 +7,7 @@ from db.read_configs import read_configs
 from db.updates import update_config_userid
 from errors.error_codes import UNABLE_TO_LOGIN
 from errors.error_strings import ERROR_STRINGS
-from model.config import Config
+from model.Config import Config
 from moodlews.get_site_info import get_site_info
 from moodlews.login import login
 from ops.populate_config import populate_config
@@ -39,7 +39,7 @@ def first_run() -> (list, Connection):
 
         if config.update_userid(userid):
             # Update to the new userid
-            update_config_userid(conn, config.id(), userid)
+            update_config_userid(conn, config.id, userid)
 
         state.append(config)
 

@@ -1,7 +1,7 @@
 import logging
 
 from fileops.helpers import _create_path
-from model.config import Config
+from model.Config import Config
 from model.file import File
 from moodlews.download_file import ws_download_file
 

@@ -2,7 +2,7 @@ import logging
 
 import requests
 
-from model.config import Config
+from model.Config import Config
 
 
 def ws_download_file(file_url: str, infos: Config) -> bytes:
@@ -15,7 +15,7 @@ def ws_download_file(file_url: str, infos: Config) -> bytes:
     :param infos: Configuration file with the Moodle's info
     :return: File content
     """
-    params = {'token': infos.get_token()}
+    params = {'token': infos.token}
     print(file_url)
 
     response = requests.get(file_url, params=params)

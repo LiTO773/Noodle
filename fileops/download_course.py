@@ -5,7 +5,7 @@ from fileops.download_file import download_file
 from fileops.download_url import download_url
 from fileops.helpers import _create_path
 from model.ContentWrapper import ContentWrapper
-from model.config import Config
+from model.Config import Config
 from model.course import Course
 from model.file import File
 from model.url import URL
@@ -17,7 +17,7 @@ def download_course(course: Course, state: Config):
     :param course: Course to download
     :param state: Moodle's config
     """
-    __download_content_wrappers(course, state.get_location(), state)
+    __download_content_wrappers(course, state.location, state)
 
 
 def __download_content_wrappers(cw: ContentWrapper, location: str, state: Config):
