@@ -1,6 +1,6 @@
 from sqlite3 import Connection
 
-from db.query_config import get_config_courses, get_config_files, get_config_folders, get_config_sections, \
+from db.queries import get_config_courses, get_config_files, get_section_modules, get_course_sections, \
     get_config_urls
 from model.config import Config
 from model.course import Course, Section
@@ -24,17 +24,17 @@ def populate_config(conn: Connection, config: Config):
         course = Course.create_from_db(row)
 
         # Create the sections and populate each one
-        rows_sections = get_config_sections(conn, course.id())
+        rows_sections = get_course_sections(conn, config.id(), course.id())
 
         for r_section in rows_sections:
             section = Section.create_from_db(r_section)
-            section.add_files(__fetch_files_and_urls(conn, section.id(), True))
+            section.add_files(__fetch_files_and_urls(conn, config.id(), section.id(), True))
 
-            # Create the folders, populate each one and add them to the section
-            rows_folders = get_config_folders(conn, section.id())
+            # Create the modules, populate each one and add them to the section
+            rows_folders = get_section_modules(conn, config.id(), section.id())
             for r_folder in rows_folders:
                 folder = Folder.create_from_db(r_folder)
-                folder.add_files(__fetch_files_and_urls(conn, folder.id(), False))
+                folder.add_files(__fetch_files_and_urls(conn, config.id(), folder.id(), False))
                 section.add_file(folder)
 
             course.add_section(section)
