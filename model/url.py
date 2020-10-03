@@ -2,7 +2,8 @@ from model.Downloadable import Downloadable
 
 
 class URL(Downloadable):
-    """ This class stores the information of a Moodle folder """
+    """ This class stores the information of a Moodle URL. This can be anything that isn't a file or a content wrapper
+    """
     @staticmethod
     def create_from_db(info: tuple):
         url = URL(info[2], info[3], info[4], info[5])

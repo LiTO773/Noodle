@@ -27,7 +27,7 @@ def check_contents(conn: Connection, state: Config):
 
 def __add_new_courses(conn: Connection, state: Config, courses: Dict[int, str]) -> list:
     """
-    This function is responsible for finding new courses and adding them to the DB
+    This function is responsible for finding new courses, adding them to the DB and downloading them if the user wants
     :param state: The current moodle state
     :param courses: List of all the courses. The id is the key, and the shortname the value
     :return: A list of the new courses ids
@@ -49,13 +49,13 @@ def __add_new_courses(conn: Connection, state: Config, courses: Dict[int, str]) 
     # Download the courses or notify
     if state.get_default_action() == 'notify':
         # Notify
-        logging.warning("New courses were found, please change the config.json to which contents you want to download.")
+        logging.warning("New courses were found, please check which contents you want to download.")
     elif state.get_default_action() == 'download':
         # Download
         logging.info("Downloading")
         for course_key in state.get_courses():
             course = state.get_courses()[course_key]
-            download_course(course, state)
+            # download_course(course, state)
     return new_courses
 
 
