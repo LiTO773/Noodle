@@ -4,7 +4,7 @@ from model.file import File
 
 
 class Module(Identifiable, ContentWrapper):
-    """ This class stores the information of a Moodle folder """
+    """ This class stores the information of a Moodle module """
     @staticmethod
     def create_from_db(info: tuple):
         folder = Module(info[0], info[2], info[3], info[4])
@@ -40,7 +40,7 @@ class Module(Identifiable, ContentWrapper):
     def __set_remaining_params(self, downloaded, current_hash):
         """ Used to add parameters already available in the DB """
         self.__downloaded = downloaded
-        self.__current_hash = current_hash
+        self.__db_hash = current_hash
 
     def __hash__(self):
         file_hash_str = 0
@@ -62,8 +62,5 @@ class Module(Identifiable, ContentWrapper):
     def get_downloaded(self):
         return self.__downloaded
 
-    def get_files(self):
-        return self.__contents
-
     def get_contents(self):
-        return self.get_files()
+        return self.__contents

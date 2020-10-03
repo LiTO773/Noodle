@@ -34,12 +34,12 @@ class File(Downloadable):
         self.__timemodified = timemodified
         self.__download = download
         self.__downloaded = False
-        self.__current_hash = -1
+        self.__db_hash = -1
 
     def __set_remaining_params(self, downloaded, current_hash):
         """ Used to add parameters already available in the DB """
         self.__downloaded = downloaded
-        self.__current_hash = current_hash
+        self.__db_hash = current_hash
 
     def __hash__(self):
         return hash((self.__filename, self.__filesize, self.__fileurl, self.__timecreated, self.__timemodified))

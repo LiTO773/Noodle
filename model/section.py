@@ -18,7 +18,7 @@ class Section(Identifiable, ContentWrapper):
     def __set_remaining_params(self, downloaded, current_hash):
         """ Used to add parameters already available in the DB """
         self.__downloaded = downloaded
-        self.__current_hash = current_hash
+        self.__db_hash = current_hash
 
     def __init__(self, id, name, download=False):
         self.__id = id

@@ -24,7 +24,7 @@ class URL(Downloadable):
     def __set_remaining_params(self, downloaded, current_hash):
         """ Used to add parameters already available in the DB """
         self.__downloaded = downloaded
-        self.__current_hash = current_hash
+        self.__db_hash = current_hash
 
     def __hash__(self):
         return hash((self.__filename, self.__fileurl))
