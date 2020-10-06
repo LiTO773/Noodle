@@ -12,12 +12,14 @@ class Module(ContentWrapper):
 
     @staticmethod
     def create_from_json(body: dict, download=False):
-        folder = Module(body['id'], body['name'], body['url'], download)
+        module = Module(body['id'], body['name'], body['url'], download)
 
         for content in body['contents']:
-            new_file = File.create_file_or_url(content, download)
+            new_file = File.create_file_or_linkablecontent(content, download)
             if new_file is not None:
-                folder.add_content(new_file)
+                module.add_content(new_file)
+
+        return module
 
     def __init__(self, id, name, url, download=False):
         self.__id = id

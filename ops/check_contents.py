@@ -23,6 +23,7 @@ def check_contents(conn: Connection, state: Config):
     new_courses = __add_new_courses(conn, state, courses)
 
     # Check for alterations in the downloaded courses
+    # TODO
 
 
 def __add_new_courses(conn: Connection, state: Config, courses: Dict[int, str]) -> list:
@@ -55,7 +56,7 @@ def __add_new_courses(conn: Connection, state: Config, courses: Dict[int, str]) 
         logging.info("Downloading")
         for course_key in state.courses:
             course = state.courses[course_key]
-            # download_course(course, state)
+            download_course(course, state)
     return new_courses
 
 

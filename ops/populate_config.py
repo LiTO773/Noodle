@@ -45,7 +45,7 @@ def populate_config(conn: Connection, config: Config):
                 rows_files = get_module_files(conn, config.id, module.id)
 
                 for r_file in rows_files:
-                    module.add_content(File.create_file_or_url(r_file))
+                    module.add_content(File.create_file_or_linkablecontent(r_file))
 
                 # Add the module to the section
                 section.add_module(module)

@@ -50,6 +50,10 @@ class Course(ContentWrapper):
         return self.__sections
 
     def read_json_contents(self, body: dict):
+        """
+        This function is responsible for populating the course with the data found in the JSON.
+        :param body: JSON info
+        """
         for section in body:
             new_section = Section(section['id'], section['name'], self.__download)
             new_section.read_json_contents(section['modules'])

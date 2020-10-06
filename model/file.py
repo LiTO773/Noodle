@@ -16,12 +16,12 @@ class File:
                     download)
 
     @staticmethod
-    def create_file_or_url(body: dict, download=False):
+    def create_file_or_linkablecontent(body: dict, download=False):
         """ Returns a file, a LinkableContent or None if it is none of those """
         if body['type'] == 'file':
             return File.create_from_json(body, download)
-        elif body['type'] == 'url':
-            return LinkableContent.create_from_json(body, download)
+        elif body['modname'] != 'label':
+            return LinkableContent.create_from_json(body)
 
         return None
 

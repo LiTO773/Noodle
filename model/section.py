@@ -27,16 +27,19 @@ class Section(ContentWrapper):
         self.__modules = []
 
     def read_json_contents(self, body: dict):
+        """
+        This function is responsible for populating the section with the data found in the JSON.
+        :param body: JSON info
+        """
         for module in body:
-            if module['modname'] == 'resource':
-                # It's either a file or a URL
-                new_file = File.create_file_or_url(module['contents'][0], self.__download)
-                if new_file is not None:
-                    self.__modules.append(new_file)
-            elif module['modname'] == 'folder':
-                # It's a folder
+            if module['modname'] == 'folder' or module['modname'] == 'resource':
+                # It's a module
                 new_folder = Module.create_from_json(module, self.__download)
                 self.__modules.append(new_folder)
+            elif module['modname'] != 'label':
+                # It's a LinkableContent
+                lc = LinkableContent.create_from_json(module)
+                self.__modules.append(lc)
 
     # GETTERS
     @property

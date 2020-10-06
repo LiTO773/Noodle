@@ -17,7 +17,6 @@ class LinkableContent:
      - Glossary
      - H5P
      - IMS content package
-     - Label
      - Lesson
      - Page
      - Quiz
@@ -32,23 +31,23 @@ class LinkableContent:
     """
     @staticmethod
     def create_from_db(info: tuple):
-        return LinkableContent(info[1], info[5], info[6], info[2], info[3], info[4])
+        return LinkableContent(info[1], info[5], info[6], info[4])
 
-    def __init__(self, modname: MoodlePossibleContents, name: str, url: str, section_id: int = None,
-                 module_id: int = None, own_id: int = None):
+    @staticmethod
+    def create_from_json(body: dict):
+        return LinkableContent(body['modname'], body['name'], body['url'], own_id=(body['id'] if 'id' in body else None)
+                               )
+
+    def __init__(self, modname: MoodlePossibleContents, name: str, url: str, own_id: int = None):
         """
         Creates a LinkableContent
         :param modname: What the class is representing (could be a Quiz, URL, Assignment, etc.)
         :param name: Name of the content
         :param url: URL of the content
-        :param section_id: ID of the section (can be None if module_id is filled)
-        :param module_id: ID of the module (can be None if section_id is filled)
         :param own_id: It's own ID. This parameter is optional, since materials in the "contents" section of a module
         don't have an ID
         """
         self.__modname = modname
-        self.__section_id = section_id
-        self.__module_id = module_id
         self.__own_id = own_id
         self.__name = name
         self.__url = url
@@ -58,16 +57,6 @@ class LinkableContent:
     def modname(self):
         """ Modname property """
         return self.__modname
-
-    @property
-    def section_id(self):
-        """ Section_id property """
-        return self.__section_id
-
-    @property
-    def module_id(self):
-        """ Module_id property """
-        return self.__module_id
 
     @property
     def own_id(self):
