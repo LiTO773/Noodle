@@ -26,14 +26,19 @@ class URL:
     def __hash__(self):
         return hash((self.__filename, self.__fileurl))
 
-    def get_name(self):
+    # GETTERS
+    @property
+    def name(self):
         return self.__filename
 
-    def get_url(self):
+    @property
+    def url(self):
         return self.__fileurl
 
-    def get_time_modified(self):
+    @property
+    def time_modified(self):
         return self.__timemodified
 
-    def get_download(self):
+    @property
+    def download(self):
         return self.__download

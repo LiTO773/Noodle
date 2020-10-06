@@ -40,7 +40,7 @@ def populate_config(conn: Connection, config: Config):
                 module = Module.create_from_db(r_module)
 
                 # Add the LinkableContents
-                module.add_contents(__get_linkablecontents(conn, config.id, module.id, False))
+                module.contents = __get_linkablecontents(conn, config.id, module.id, False)
 
                 # Add the Files
                 rows_files = get_module_files(conn, config.id, module.id)

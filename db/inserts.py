@@ -99,7 +99,7 @@ def insert_url(conn: Connection, url: URL, section_id: int = None, folder_id: in
     c = conn.cursor()
     c.execute("""INSERT INTO urls(section_id, folder_id, filename, fileurl, timemodified, download, downloaded, hash)
                  VALUES(?, ?, ?, ?, ?, ?, 0, ?);""",
-              (section_id, folder_id, url.get_name(), url.get_url(), url.get_time_modified(), url.get_download(),
+              (section_id, folder_id, url.name, url.url, url.time_modified, url.download,
                hash(url))
               )
 
