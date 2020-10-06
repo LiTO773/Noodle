@@ -80,8 +80,8 @@ def insert_file(conn: Connection, file: File, section_id: int = None, folder_id:
     c.execute("""INSERT INTO files(section_id, folder_id, filename, filesize, fileurl, timecreated, timemodified,
                                    download, downloaded, hash)
                  VALUES(?, ?, ?, ?, ?, ?, ?, ?, 0, ?);""",
-              (section_id, folder_id, file.get_name(), file.get_size(), file.get_url(), file.get_time_created(),
-               file.get_time_modified(), file.get_download(), hash(file)))
+              (section_id, folder_id, file.name, file.size, file.url, file.time_created,
+               file.time_modified, file.download, hash(file)))
 
     conn.commit()
     c.close()

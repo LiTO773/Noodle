@@ -43,20 +43,27 @@ class File:
     def __hash__(self):
         return hash((self.__filename, self.__filesize, self.__fileurl, self.__timecreated, self.__timemodified))
 
-    def get_name(self):
+    # SETTERS
+    @property
+    def name(self):
         return self.__filename
 
-    def get_size(self):
+    @property
+    def size(self):
         return self.__filesize
 
-    def get_url(self):
+    @property
+    def url(self):
         return self.__fileurl
 
-    def get_time_created(self):
+    @property
+    def time_created(self):
         return self.__timecreated
 
-    def get_time_modified(self):
+    @property
+    def time_modified(self):
         return self.__timemodified
 
-    def get_download(self):
+    @property
+    def download(self):
         return self.__download
