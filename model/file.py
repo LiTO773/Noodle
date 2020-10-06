@@ -1,8 +1,7 @@
-from model.Downloadable import Downloadable
-from model.url import URL
+from model.LinkableContents import LinkableContent
 
 
-class File(Downloadable):
+class File:
     """ This class stores the information of a Moodle file """
 
     @staticmethod
@@ -17,12 +16,12 @@ class File(Downloadable):
                     download)
 
     @staticmethod
-    def create_file_or_url(body: dict, download=False):
-        """ Returns a file, a URL or None if it is none of those """
+    def create_file_or_linkablecontent(body: dict, download=False):
+        """ Returns a file, a LinkableContent or None if it is none of those """
         if body['type'] == 'file':
             return File.create_from_json(body, download)
-        elif body['type'] == 'url':
-            return URL.create_from_json(body, download)
+        elif body['modname'] != 'label':
+            return LinkableContent.create_from_json(body)
 
         return None
 
@@ -34,30 +33,37 @@ class File(Downloadable):
         self.__timemodified = timemodified
         self.__download = download
         self.__downloaded = False
-        self.__current_hash = -1
+        self.__db_hash = -1
 
     def __set_remaining_params(self, downloaded, current_hash):
         """ Used to add parameters already available in the DB """
         self.__downloaded = downloaded
-        self.__current_hash = current_hash
+        self.__db_hash = current_hash
 
     def __hash__(self):
         return hash((self.__filename, self.__filesize, self.__fileurl, self.__timecreated, self.__timemodified))
 
-    def get_name(self):
+    # SETTERS
+    @property
+    def name(self):
         return self.__filename
 
-    def get_size(self):
+    @property
+    def size(self):
         return self.__filesize
 
-    def get_url(self):
+    @property
+    def url(self):
         return self.__fileurl
 
-    def get_time_created(self):
+    @property
+    def time_created(self):
         return self.__timecreated
 
-    def get_time_modified(self):
+    @property
+    def time_modified(self):
         return self.__timemodified
 
-    def get_download(self):
+    @property
+    def download(self):
         return self.__download

@@ -1,11 +1,14 @@
-from model.Downloadable import Downloadable
-
-
-class ContentWrapper(Downloadable):
+class ContentWrapper:
     """ This is an interface that identifies classes that contain more than one contents (aka everything but files and
     urls) """
-    def get_contents(self):
+    def contents(self):
         pass
 
-    def get_name(self):
+    def name(self):
+        pass
+
+    def download(self):
+        pass
+
+    def downloaded(self):
         pass

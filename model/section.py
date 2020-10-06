@@ -1,10 +1,12 @@
+from typing import List, Union
+
 from model.ContentWrapper import ContentWrapper
-from model.Identifiable import Identifiable
+from model.LinkableContents import LinkableContent
 from model.file import File
-from model.folder import Folder
+from model.module import Module
 
 
-class Section(Identifiable, ContentWrapper):
+class Section(ContentWrapper):
     """ This class is responsible for storing the information about a course's section """
     @staticmethod
     def create_from_db(info: tuple):
@@ -15,55 +17,67 @@ class Section(Identifiable, ContentWrapper):
     def __set_remaining_params(self, downloaded, current_hash):
         """ Used to add parameters already available in the DB """
         self.__downloaded = downloaded
-        self.__current_hash = current_hash
+        self.__db_hash = current_hash
 
     def __init__(self, id, name, download=False):
         self.__id = id
         self.__name = name
         self.__download = download
         self.__downloaded = False
-        self.__files = []
+        self.__modules = []
 
+    def read_json_contents(self, body: dict):
+        """
+        This function is responsible for populating the section with the data found in the JSON.
+        :param body: JSON info
+        """
+        for module in body:
+            if module['modname'] == 'folder' or module['modname'] == 'resource':
+                # It's a module
+                new_folder = Module.create_from_json(module, self.__download)
+                self.__modules.append(new_folder)
+            elif module['modname'] != 'label':
+                # It's a LinkableContent
+                lc = LinkableContent.create_from_json(module)
+                self.__modules.append(lc)
+
+    # GETTERS
+    @property
     def id(self):
         return self.__id
 
-    def read_json_contents(self, body: dict):
-        for module in body:
-            if module['modname'] == 'resource':
-                # It's either a file or a URL
-                new_file = File.create_file_or_url(module['contents'][0], self.__download)
-                if new_file is not None:
-                    self.__files.append(new_file)
-            elif module['modname'] == 'folder':
-                # It's a folder
-                new_folder = Folder.create_from_json(module, self.__download)
-                self.__files.append(new_folder)
+    @property
+    def modules(self):
+        return self.__modules
 
-    def add_files(self, files: list):
-        self.__files = files.copy()
+    @property
+    def name(self):
+        return self.__name
 
-    def add_file(self, file):
-        self.__files.append(file)
+    @property
+    def download(self):
+        return self.__download
+
+    @property
+    def downloaded(self):
+        return self.__downloaded
+
+    @property
+    def contents(self):
+        return self.modules
+
+    # SETTERS
+    @modules.setter
+    def modules(self, new_modules: List[Union[Module, LinkableContent]]):
+        self.__modules = new_modules.copy()
+
+    def add_module(self, file):
+        self.__modules.append(file)
 
     def __hash__(self):
         file_hash_str = 0
 
-        for file in self.__files:
+        for file in self.__modules:
             file_hash_str += hash(file)
 
         return hash((self.__id, file_hash_str))
-
-    def get_name(self):
-        return self.__name
-
-    def get_download(self):
-        return self.__download
-
-    def get_downloaded(self):
-        return self.__downloaded
-
-    def get_files(self):
-        return self.__files
-
-    def get_contents(self):
-        return self.get_files()

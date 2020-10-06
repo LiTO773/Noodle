@@ -12,7 +12,7 @@ __schema = [
         max_file_size integer NOT NULL,
         default_action text NOT NULL,
         userid integer DEFAULT -1,
-        locattion text NOT NULL
+        location text NOT NULL
     );""",
     """
     CREATE TABLE IF NOT EXISTS courses (
@@ -28,30 +28,33 @@ __schema = [
     """
     CREATE TABLE IF NOT EXISTS sections (
         id integer NOT NULL,
+        moodle_id integer NOT NULL,
         course_id integer NOT NULL,
         name text NOT NULL,
         download integer NOT NULL,
         downloaded integer NOT NULL,
         hash integer NOT NULL,
         FOREIGN KEY (course_id) REFERENCES courses (id),
-        PRIMARY KEY (id, course_id)
+        PRIMARY KEY (id, moodle_id, course_id)
     );""",
     """
-    CREATE TABLE IF NOT EXISTS folders (
+    CREATE TABLE IF NOT EXISTS modules (
         id integer NOT NULL,
+        moodle_id integer NOT NULL,
         section_id integer NOT NULL,
         name text NOT NULL,
         url text NOT NULL,
         download integer NOT NULL,
         downloaded integer NOT NULL,
         hash integer NOT NULL,
+        FOREIGN KEY (moodle_id) REFERENCES configs (id),
         FOREIGN KEY (section_id) REFERENCES sections (id),
-        PRIMARY KEY (id, section_id)
+        PRIMARY KEY (id, moodle_id, section_id)
     );""",
     """
     CREATE TABLE IF NOT EXISTS files (
-        section_id integer,
-        folder_id integer,
+        moodle_id integer NOT NULL,
+        module_id integer,
         filename text NOT NULL,
         filesize integer NOT NULL,
         fileurl text NOT NULL,
@@ -60,23 +63,24 @@ __schema = [
         download integer NOT NULL,
         downloaded integer NOT NULL,
         hash integer NOT NULL,
-        FOREIGN KEY (section_id) REFERENCES sections (id),
-        FOREIGN KEY (folder_id) REFERENCES folders (id),
-        PRIMARY KEY (fileurl, timecreated)
+        FOREIGN KEY (moodle_id) REFERENCES configs (id),
+        FOREIGN KEY (module_id) REFERENCES modules (id),
+        PRIMARY KEY (moodle_id, module_id, fileurl, timemodified)
     );""",
+    # linkablecontents doesn't have a primary key, since it is possible for the same link with the same name and modname
+    # to exist in the section
     """
-    CREATE TABLE IF NOT EXISTS urls (
+    CREATE TABLE IF NOT EXISTS linkablecontents (
+        moodle_id integer NOT NULL,
+        modname integer NOT NULL,
         section_id integer,
-        folder_id integer,
-        filename text NOT NULL,
-        fileurl text NOT NULL,
-        timemodified integer NOT NULL,
-        download integer NOT NULL,
-        downloaded integer NOT NULL,
-        hash integer NOT NULL,
+        module_id integer,
+        own_id integer,
+        name text NOT NULL,
+        url text NOT NULL,
+        FOREIGN KEY (moodle_id) REFERENCES configs (id),
         FOREIGN KEY (section_id) REFERENCES sections (id),
-        FOREIGN KEY (folder_id) REFERENCES folders (id),
-        PRIMARY KEY (fileurl, timemodified)
+        FOREIGN KEY (module_id) REFERENCES modules (id)
     );"""
 ]
 

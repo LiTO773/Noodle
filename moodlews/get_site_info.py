@@ -1,4 +1,4 @@
-from model.config import Config
+from model.Config import Config
 from .moodle_request import _moodle_request
 
 

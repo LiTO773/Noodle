@@ -1,10 +1,8 @@
 from model.ContentWrapper import ContentWrapper
-from model.Downloadable import Downloadable
-from model.Identifiable import Identifiable
 from model.section import Section
 
 
-class Course(Identifiable, ContentWrapper):
+class Course(ContentWrapper):
     """ This class is responsible for storing all the info about a course """
 
     @staticmethod
@@ -17,7 +15,7 @@ class Course(Identifiable, ContentWrapper):
     def __set_remaining_params(self, downloaded, current_hash):
         """ Used to add parameters already available in the DB """
         self.__downloaded = downloaded
-        self.__current_hash = current_hash
+        self.__db_hash = current_hash
 
     def __init__(self, id: int, shortname: str, download: bool=False):
         self.__id = id
@@ -26,10 +24,36 @@ class Course(Identifiable, ContentWrapper):
         self.__downloaded = False
         self.__sections = []
 
+    # GETTER
+    @property
     def id(self):
         return self.__id
 
+    @property
+    def name(self):
+        return self.__shortname
+
+    @property
+    def download(self):
+        return self.__download
+
+    @property
+    def downloaded(self):
+        return self.__downloaded
+
+    @property
+    def sections(self):
+        return self.__sections
+
+    @property
+    def contents(self):
+        return self.__sections
+
     def read_json_contents(self, body: dict):
+        """
+        This function is responsible for populating the course with the data found in the JSON.
+        :param body: JSON info
+        """
         for section in body:
             new_section = Section(section['id'], section['name'], self.__download)
             new_section.read_json_contents(section['modules'])
@@ -42,24 +66,3 @@ class Course(Identifiable, ContentWrapper):
             section_hash_str += hash(section)
 
         return hash((self.__id, section_hash_str))
-
-    def add_section(self, section: Section):
-        self.__sections.append(section)
-
-    def get_shortname(self):
-        return self.__shortname
-
-    def get_name(self):
-        return self.__shortname
-
-    def get_download(self):
-        return self.__download
-
-    def get_downloaded(self):
-        return self.__downloaded
-
-    def get_sections(self):
-        return self.__sections
-
-    def get_contents(self):
-        return self.get_sections()

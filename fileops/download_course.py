@@ -2,13 +2,13 @@ import logging
 import os
 
 from fileops.download_file import download_file
-from fileops.download_url import download_url
+from fileops.download_linkablecontent import download_linkablecontent
 from fileops.helpers import _create_path
 from model.ContentWrapper import ContentWrapper
-from model.config import Config
+from model.Config import Config
+from model.LinkableContents import LinkableContent
 from model.course import Course
 from model.file import File
-from model.url import URL
 
 
 def download_course(course: Course, state: Config):
@@ -17,7 +17,7 @@ def download_course(course: Course, state: Config):
     :param course: Course to download
     :param state: Moodle's config
     """
-    __download_content_wrappers(course, state.get_location(), state)
+    __download_content_wrappers(course, state.location, state)
 
 
 def __download_content_wrappers(cw: ContentWrapper, location: str, state: Config):
@@ -30,21 +30,22 @@ def __download_content_wrappers(cw: ContentWrapper, location: str, state: Config
     :param state: Moodle's config
     """
     # Check if it is meant to be downloaded
-    if not cw.get_download():
+    if not cw.download:
         return
 
     # Create the folder if it doesn't exist
-    new_path = _create_path(location, cw.get_name())
+    new_path = _create_path(location, cw.name)
     try:
         os.makedirs(new_path)
     except OSError as e:
-        logging.info(cw.get_name() + ' folder already exists')
+        logging.info(cw.name + ' folder already exists')
 
     # Download either the files or another ContentWrapper
-    for content in cw.get_contents():
+    for content in cw.contents:
+        print(content.name)
         if isinstance(content, ContentWrapper):
             __download_content_wrappers(content, new_path, state)
         elif isinstance(content, File):
             download_file(content, new_path, state)
-        elif isinstance(content, URL):
-            download_url(content, new_path)
+        elif isinstance(content, LinkableContent):
+            download_linkablecontent(content, new_path)
