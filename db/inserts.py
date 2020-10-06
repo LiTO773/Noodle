@@ -40,13 +40,13 @@ def insert_section(conn: Connection, section: Section, course_id: int):
     c = conn.cursor()
     c.execute("""INSERT INTO sections(id, course_id, name, download, downloaded, hash)
                  VALUES(?, ?, ?, ?, 0, ?);""",
-              (section.id(), course_id, section.get_name(), section.get_download(), hash(section)))
+              (section.id(), course_id, section.name, section.download, hash(section)))
 
     conn.commit()
     c.close()
 
     # Add the modules
-    for module in section.get_files():
+    for module in section.modules:
         __insert_module(conn, module, section.id())
 
 

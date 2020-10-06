@@ -32,7 +32,7 @@ def populate_config(conn: Connection, config: Config):
             section = Section.create_from_db(r_section)
 
             # Add the LinkableContents
-            section.add_modules(__get_linkablecontents(conn, config.id, section.id(), True))
+            section.modules = __get_linkablecontents(conn, config.id, section.id(), True)
 
             # Create the modules, populate each one and add them to the section
             rows_modules = get_section_modules(conn, config.id, section.id())

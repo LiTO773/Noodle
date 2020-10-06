@@ -40,8 +40,26 @@ class Section:
                 new_folder = Module.create_from_json(module, self.__download)
                 self.__modules.append(new_folder)
 
-    def add_modules(self, files: List[Union[Module, LinkableContent]]):
-        self.__modules = files.copy()
+    # GETTERS
+    @property
+    def modules(self):
+        return self.__modules
+
+    @property
+    def name(self):
+        return self.__name
+
+    @property
+    def download(self):
+        return self.__download
+
+    def downloaded(self):
+        return self.__downloaded
+
+    # SETTERS
+    @modules.setter
+    def modules(self, new_modules: List[Union[Module, LinkableContent]]):
+        self.__modules = new_modules.copy()
 
     def add_module(self, file):
         self.__modules.append(file)
@@ -53,18 +71,3 @@ class Section:
             file_hash_str += hash(file)
 
         return hash((self.__id, file_hash_str))
-
-    def get_name(self):
-        return self.__name
-
-    def get_download(self):
-        return self.__download
-
-    def get_downloaded(self):
-        return self.__downloaded
-
-    def get_files(self):
-        return self.__modules
-
-    def get_contents(self):
-        return self.get_files()
