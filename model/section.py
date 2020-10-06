@@ -1,11 +1,12 @@
 from typing import List, Union
 
+from model.ContentWrapper import ContentWrapper
 from model.LinkableContents import LinkableContent
 from model.file import File
 from model.module import Module
 
 
-class Section:
+class Section(ContentWrapper):
     """ This class is responsible for storing the information about a course's section """
     @staticmethod
     def create_from_db(info: tuple):
@@ -25,9 +26,6 @@ class Section:
         self.__downloaded = False
         self.__modules = []
 
-    def id(self):
-        return self.__id
-
     def read_json_contents(self, body: dict):
         for module in body:
             if module['modname'] == 'resource':
@@ -42,6 +40,10 @@ class Section:
 
     # GETTERS
     @property
+    def id(self):
+        return self.__id
+
+    @property
     def modules(self):
         return self.__modules
 
@@ -53,8 +55,13 @@ class Section:
     def download(self):
         return self.__download
 
+    @property
     def downloaded(self):
         return self.__downloaded
+
+    @property
+    def contents(self):
+        return self.modules
 
     # SETTERS
     @modules.setter

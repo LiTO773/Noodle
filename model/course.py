@@ -2,7 +2,7 @@ from model.ContentWrapper import ContentWrapper
 from model.section import Section
 
 
-class Course:
+class Course(ContentWrapper):
     """ This class is responsible for storing all the info about a course """
 
     @staticmethod
@@ -24,8 +24,30 @@ class Course:
         self.__downloaded = False
         self.__sections = []
 
+    # GETTER
+    @property
     def id(self):
         return self.__id
+
+    @property
+    def name(self):
+        return self.__shortname
+
+    @property
+    def download(self):
+        return self.__download
+
+    @property
+    def downloaded(self):
+        return self.__downloaded
+
+    @property
+    def sections(self):
+        return self.__sections
+
+    @property
+    def contents(self):
+        return self.__sections
 
     def read_json_contents(self, body: dict):
         for section in body:
@@ -40,24 +62,3 @@ class Course:
             section_hash_str += hash(section)
 
         return hash((self.__id, section_hash_str))
-
-    def add_section(self, section: Section):
-        self.__sections.append(section)
-
-    def get_shortname(self):
-        return self.__shortname
-
-    def get_name(self):
-        return self.__shortname
-
-    def get_download(self):
-        return self.__download
-
-    def get_downloaded(self):
-        return self.__downloaded
-
-    def get_sections(self):
-        return self.__sections
-
-    def get_contents(self):
-        return self.get_sections()

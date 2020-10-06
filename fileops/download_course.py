@@ -30,15 +30,15 @@ def __download_content_wrappers(cw: ContentWrapper, location: str, state: Config
     :param state: Moodle's config
     """
     # Check if it is meant to be downloaded
-    if not cw.get_download():
+    if not cw.download:
         return
 
     # Create the folder if it doesn't exist
-    new_path = _create_path(location, cw.get_name())
+    new_path = _create_path(location, cw.name)
     try:
         os.makedirs(new_path)
     except OSError as e:
-        logging.info(cw.get_name() + ' folder already exists')
+        logging.info(cw.name + ' folder already exists')
 
     # Download either the files or another ContentWrapper
     for content in cw.get_contents():

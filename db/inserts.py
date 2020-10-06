@@ -19,13 +19,13 @@ def insert_course(conn: Connection, course: Course, moodle_id: int):
     c = conn.cursor()
     c.execute("""INSERT INTO courses(id, moodle_id, shortname, download, downloaded, hash)
                  VALUES(?, ?, ?, ?, 0, ?);""",
-              (course.id(), moodle_id, course.get_shortname(), course.get_download(), hash(course)))
+              (course.id(), moodle_id, course.name, course.download, hash(course)))
 
     conn.commit()
     c.close()
 
     # Add the sections
-    for section in course.get_sections():
+    for section in course.sections:
         insert_section(conn, section, course.id())
 
 
@@ -40,14 +40,14 @@ def insert_section(conn: Connection, section: Section, course_id: int):
     c = conn.cursor()
     c.execute("""INSERT INTO sections(id, course_id, name, download, downloaded, hash)
                  VALUES(?, ?, ?, ?, 0, ?);""",
-              (section.id(), course_id, section.name, section.download, hash(section)))
+              (section.id, course_id, section.name, section.download, hash(section)))
 
     conn.commit()
     c.close()
 
     # Add the modules
     for module in section.modules:
-        __insert_module(conn, module, section.id())
+        __insert_module(conn, module, section.id)
 
 
 def __insert_module(conn: Connection, module: Union[File, Module, URL], section_id: int):
