@@ -1,7 +1,8 @@
+from model.ContentWrapper import ContentWrapper
 from model.file import File
 
 
-class Module:
+class Module(ContentWrapper):
     """ This class stores the information of a Moodle module """
     @staticmethod
     def create_from_db(info: tuple):
@@ -26,14 +27,38 @@ class Module:
         self.__downloaded = False
         self.__contents = []
 
+    # GETTERS
+    @property
     def id(self):
         return self.__id
 
+    @property
+    def name(self):
+        return self.__name
+
+    @property
+    def url(self):
+        return self.__url
+
+    @property
+    def download(self):
+        return self.__download
+
+    @property
+    def downloaded(self):
+        return self.__downloaded
+
+    @property
+    def contents(self):
+        return self.__contents
+
+    # SETTERS
+    @contents.setter
+    def contents(self, new_contents: list):
+        self.__contents = new_contents.copy()
+
     def add_content(self, file):
         self.__contents.append(file)
-
-    def add_contents(self, files: list):
-        self.__contents = files.copy()
 
     def __set_remaining_params(self, downloaded, current_hash):
         """ Used to add parameters already available in the DB """
@@ -47,18 +72,3 @@ class Module:
             file_hash_str += hash(file)
 
         return hash((self.__id, self.__url, file_hash_str))
-
-    def get_name(self):
-        return self.__name
-
-    def get_url(self):
-        return self.__url
-
-    def get_download(self):
-        return self.__download
-
-    def get_downloaded(self):
-        return self.__downloaded
-
-    def get_contents(self):
-        return self.__contents

@@ -26,7 +26,7 @@ def populate_config(conn: Connection, config: Config):
         course = Course.create_from_db(row)
 
         # Create the sections and populate each one
-        rows_sections = get_course_sections(conn, config.id, course.id())
+        rows_sections = get_course_sections(conn, config.id, course.id)
 
         for r_section in rows_sections:
             section = Section.create_from_db(r_section)
@@ -40,10 +40,10 @@ def populate_config(conn: Connection, config: Config):
                 module = Module.create_from_db(r_module)
 
                 # Add the LinkableContents
-                module.add_contents(__get_linkablecontents(conn, config.id, module.id(), False))
+                module.add_contents(__get_linkablecontents(conn, config.id, module.id, False))
 
                 # Add the Files
-                rows_files = get_module_files(conn, config.id, module.id())
+                rows_files = get_module_files(conn, config.id, module.id)
 
                 for r_file in rows_files:
                     module.add_content(File.create_file_or_url(r_file))

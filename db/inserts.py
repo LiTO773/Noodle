@@ -118,7 +118,7 @@ def insert_folder(conn: Connection, folder: Module, section_id: int):
     c = conn.cursor()
     c.execute("""INSERT INTO folders(id, section_id, name, url, download, downloaded, hash)
                  VALUES(?, ?, ?, ?, ?, 0, ?);""",
-              (folder.id(), section_id, folder.get_name(), folder.get_url(), folder.get_download(), hash(folder)))
+              (folder.id, section_id, folder.name, folder.url, folder.download, hash(folder)))
 
     conn.commit()
     c.close()
@@ -126,6 +126,6 @@ def insert_folder(conn: Connection, folder: Module, section_id: int):
     # Add the files/urls
     for file in folder.get_files():
         if isinstance(file, File):
-            insert_file(conn, file, folder_id=folder.id())
+            insert_file(conn, file, folder_id=folder.id)
         elif isinstance(file, URL):
-            insert_url(conn, file, folder_id=folder.id())
+            insert_url(conn, file, folder_id=folder.id)
