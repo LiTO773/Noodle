@@ -1,4 +1,4 @@
-from model.url import URL
+from model.LinkableContents import LinkableContent
 
 
 class File:
@@ -17,11 +17,11 @@ class File:
 
     @staticmethod
     def create_file_or_url(body: dict, download=False):
-        """ Returns a file, a URL or None if it is none of those """
+        """ Returns a file, a LinkableContent or None if it is none of those """
         if body['type'] == 'file':
             return File.create_from_json(body, download)
         elif body['type'] == 'url':
-            return URL.create_from_json(body, download)
+            return LinkableContent.create_from_json(body, download)
 
         return None
 

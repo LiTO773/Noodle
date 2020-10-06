@@ -8,7 +8,6 @@ from model.Config import Config
 from model.course import Course, Section
 from model.file import File
 from model.module import Module
-from model.url import URL
 
 
 def populate_config(conn: Connection, config: Config):

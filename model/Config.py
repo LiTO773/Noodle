@@ -88,4 +88,4 @@ class Config:
 
     # Other methods
     def add_course(self, course: Course):
-        self.__courses[course.id()] = course
+        self.__courses[course.id] = course

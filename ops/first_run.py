@@ -29,7 +29,7 @@ def first_run() -> (list, Connection):
         # Get the token
         token = login(config)
         if token != UNABLE_TO_LOGIN:
-            config.set_token(token)
+            config.token = token
         else:
             logging.error(ERROR_STRINGS[token])
             sys.exit(-1)
@@ -37,7 +37,9 @@ def first_run() -> (list, Connection):
         # Check if the userid is still the same, if it isn't update in the DB
         userid = get_site_info(config)
 
-        if config.update_userid(userid):
+        config.userid = userid
+        # Check if the userid was correctly set
+        if config.userid == userid:
             # Update to the new userid
             update_config_userid(conn, config.id, userid)
 

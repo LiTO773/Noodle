@@ -2,13 +2,13 @@ import logging
 import os
 
 from fileops.download_file import download_file
-from fileops.download_url import download_url
+from fileops.download_url import download_linkablecontent
 from fileops.helpers import _create_path
 from model.ContentWrapper import ContentWrapper
 from model.Config import Config
+from model.LinkableContents import LinkableContent
 from model.course import Course
 from model.file import File
-from model.url import URL
 
 
 def download_course(course: Course, state: Config):
@@ -41,10 +41,10 @@ def __download_content_wrappers(cw: ContentWrapper, location: str, state: Config
         logging.info(cw.name + ' folder already exists')
 
     # Download either the files or another ContentWrapper
-    for content in cw.get_contents():
+    for content in cw.contents():
         if isinstance(content, ContentWrapper):
             __download_content_wrappers(content, new_path, state)
         elif isinstance(content, File):
             download_file(content, new_path, state)
-        elif isinstance(content, URL):
-            download_url(content, new_path)
+        elif isinstance(content, LinkableContent):
+            download_linkablecontent(content, new_path)
