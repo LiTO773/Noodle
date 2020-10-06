@@ -1,10 +1,8 @@
 from model.ContentWrapper import ContentWrapper
-from model.Downloadable import Downloadable
-from model.Identifiable import Identifiable
 from model.section import Section
 
 
-class Course(Identifiable, ContentWrapper):
+class Course:
     """ This class is responsible for storing all the info about a course """
 
     @staticmethod

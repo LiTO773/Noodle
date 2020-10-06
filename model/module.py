@@ -1,9 +1,7 @@
-from model.ContentWrapper import ContentWrapper
-from model.Identifiable import Identifiable
 from model.file import File
 
 
-class Module(Identifiable, ContentWrapper):
+class Module:
     """ This class stores the information of a Moodle module """
     @staticmethod
     def create_from_db(info: tuple):

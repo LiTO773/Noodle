@@ -1,13 +1,11 @@
 from typing import List, Union
 
-from model.ContentWrapper import ContentWrapper
-from model.Identifiable import Identifiable
 from model.LinkableContents import LinkableContent
 from model.file import File
 from model.module import Module
 
 
-class Section(Identifiable, ContentWrapper):
+class Section:
     """ This class is responsible for storing the information about a course's section """
     @staticmethod
     def create_from_db(info: tuple):

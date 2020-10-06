@@ -1,7 +1,4 @@
-from model.Downloadable import Downloadable
-
-
-class URL(Downloadable):
+class URL:
     """ This class stores the information of a Moodle URL. This can be anything that isn't a file or a content wrapper
     """
     @staticmethod
